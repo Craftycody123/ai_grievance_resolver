@@ -1,157 +1,144 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../styles/App.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup
+} from "firebase/auth";
+import { auth, db } from "../firebase";
+import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
+import "../styles/App.css";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isRegister, setIsRegister] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  /* ============================
+     CREATE USER PROFILE (ONCE)
+  ============================ */
+  const ensureUserProfile = async (user) => {
+    const userRef = doc(db, "users", user.uid);
+    const snap = await getDoc(userRef);
+
+    if (!snap.exists()) {
+      await setDoc(userRef, {
+        name: user.displayName || "User",
+        email: user.email,
+        role: "user",
+        created_at: serverTimestamp()
+      });
+    }
+  };
+
+  /* =====================
+     EMAIL / PASSWORD AUTH
+  ====================== */
+  const handleEmailAuth = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false);
-      // In a real app, you would handle authentication here
-      alert('Login successful! Redirecting...');
-      navigate('/dashboard');
-    }, 1500);
+    setError("");
+    setLoading(true);
+
+    try {
+      let userCredential;
+
+      if (isRegister) {
+        userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+      } else {
+        userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+      }
+
+      await ensureUserProfile(userCredential.user);
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
+
+    setLoading(false);
   };
 
-  const handleGoogleLogin = () => {
-    // Simulate Google login
-    alert('Google login would be implemented here');
-  };
+  /* =====================
+     GOOGLE SIGN-IN
+  ====================== */
+  const handleGoogleLogin = async () => {
+    setError("");
+    setLoading(true);
 
-  const handleForgotPassword = () => {
-    navigate('/forgot-password');
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+
+      await ensureUserProfile(result.user);
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
+
+    setLoading(false);
   };
 
   return (
     <div className="auth-page">
-      <div className="auth-container">
-        <div className="auth-card">
-          {/* Logo */}
-          <Link to="/" className="auth-logo">
-            <div className="logo-icon">
-              <span className="logo-gradient">🔄</span>
-            </div>
-            <div className="logo-text">
-              <h1>Grievance<span className="logo-highlight">AI</span></h1>
-            </div>
-          </Link>
+      <div className="auth-card">
+        <h2>{isRegister ? "Register" : "Login"}</h2>
 
-          {/* Form Header */}
-          <div className="auth-header">
-            <h2>Welcome Back</h2>
-            <p>Sign in to your account to continue</p>
-          </div>
+        <form onSubmit={handleEmailAuth}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-          {/* Social Login */}
-          <button className="social-login-btn" onClick={handleGoogleLogin}>
-            <span className="social-icon">G</span>
-            Continue with Google
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          {error && <p className="auth-error">{error}</p>}
+
+          <button type="submit" disabled={loading}>
+            {loading
+              ? "Please wait..."
+              : isRegister
+              ? "Register"
+              : "Login"}
           </button>
+        </form>
 
-          <div className="divider">
-            <span>or continue with email</span>
-          </div>
+        <div className="auth-divider">OR</div>
 
-          {/* Login Form */}
-          <form onSubmit={handleSubmit} className="auth-form">
-            <div className="form-group">
-              <label htmlFor="email">Email Address</label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                required
-                className="form-input"
-              />
-            </div>
+        <button
+          className="google-btn"
+          onClick={handleGoogleLogin}
+          disabled={loading}
+        >
+          Continue with Google
+        </button>
 
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                required
-                className="form-input"
-              />
-            </div>
-
-            <div className="form-options">
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="checkbox-input"
-                />
-                <span className="checkbox-custom"></span>
-                Remember me
-              </label>
-              <button 
-                type="button" 
-                className="forgot-password"
-                onClick={handleForgotPassword}
-              >
-                Forgot password?
-              </button>
-            </div>
-
-            <button 
-              type="submit" 
-              className="auth-submit-btn"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <>
-                  <span className="loading-spinner"></span>
-                  Signing in...
-                </>
-              ) : (
-                'Sign In'
-              )}
-            </button>
-          </form>
-
-          {/* Sign Up Link */}
-          <div className="auth-footer">
-            <p>Don't have an account? <Link to="/register" className="auth-link">Sign up</Link></p>
-          </div>
-        </div>
-
-        {/* Decorative Side */}
-        <div className="auth-side">
-          <div className="auth-side-content">
-            <h3>Experience Seamless Grievance Resolution</h3>
-            <p>Join thousands of users who trust our AI-powered platform for efficient complaint management.</p>
-            <div className="features-list">
-              <div className="feature-item">
-                <span className="feature-icon">⚡</span>
-                <span>Fast & Automated Processing</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-icon">🔒</span>
-                <span>Secure & Private</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-icon">📱</span>
-                <span>Access Anywhere</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <p className="auth-switch">
+          {isRegister ? "Already have an account?" : "Don't have an account?"}
+          <span onClick={() => setIsRegister(!isRegister)}>
+            {isRegister ? " Login" : " Register"}
+          </span>
+        </p>
       </div>
     </div>
   );

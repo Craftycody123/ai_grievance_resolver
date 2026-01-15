@@ -15,6 +15,72 @@
   --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --transition: all 0.3s ease;
 }
+.auth-page {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-card {
+  background: white;
+  padding: 32px;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.auth-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.auth-card button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #7c5c42;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.google-btn {
+  background: #4285f4;
+}
+
+.auth-divider {
+  text-align: center;
+  margin: 16px 0;
+  color: #888;
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 14px;
+}
+
+.auth-switch span {
+  color: #7c5c42;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-error {
+  color: red;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
 
 /* ===== COMPLAINT FORM ===== */
 .complaint-form {

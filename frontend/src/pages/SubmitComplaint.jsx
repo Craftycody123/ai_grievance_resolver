@@ -1,15 +1,70 @@
-import React from 'react';
-import ComplaintForm from '../components/ComplaintForm';
+import React, { useState, useContext } from "react";
+import ComplaintForm from "../components/ComplaintForm";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const SubmitComplaint = () => {
+  const { user, profile, loading } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const [result, setResult] = useState(null);
+
+  // If auth state is still loading, don't render yet
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  // If user not logged in, redirect to login
+  if (!user) {
+    navigate("/login");
+    return null;
+  }
+
   const handleSubmit = (data) => {
-    alert(`Complaint submitted! Ticket ID: ${data.ticketId}`);
+    // data comes from backend response
+    setResult({
+      ticketId: data.ticket_id,
+      department: data.predicted_department
+    });
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: "600px", margin: "0 auto" }}>
       
+      {/* User Info */}
+      {profile && (
+        <div style={{ marginBottom: "1rem", color: "#555" }}>
+          Submitting as <strong>{profile.email}</strong>
+        </div>
+      )}
+
       <ComplaintForm onSubmit={handleSubmit} />
+
+      {result && (
+        <div
+          style={{
+            marginTop: "2rem",
+            padding: "1rem",
+            borderRadius: "8px",
+            background: "#ecfeff",
+            border: "1px solid #67e8f9"
+          }}
+        >
+          <h3>Complaint Submitted Successfully 🎉</h3>
+
+          <p>
+            <strong>Ticket ID:</strong> {result.ticketId}
+          </p>
+
+          <p>
+            <strong>Assigned Department:</strong> {result.department}
+          </p>
+
+          <p style={{ fontSize: "0.9rem", color: "#555" }}>
+            Please save your Ticket ID to track the status of your complaint.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

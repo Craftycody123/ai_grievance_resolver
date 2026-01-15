@@ -129,7 +129,11 @@ def root():
 def submit_grievance(grievance: Grievance):
     department = hybrid_predict_department(grievance.text)
 
-    doc_ref = db.collection("grievances").add({
+    # Create document first
+    doc_ref = db.collection("grievances").document()
+    ticket_id = doc_ref.id   # ✅ Firestore document ID
+
+    doc_ref.set({
         "text": grievance.text,
         "user": grievance.user,
         "department": department,
@@ -138,9 +142,11 @@ def submit_grievance(grievance: Grievance):
         "created_at": datetime.utcnow()
     })
 
+    print("✅ Firestore write successful:", ticket_id)
+
     return {
         "message": "Grievance submitted successfully",
-        "ticket_id": doc_ref[1].id,
+        "ticket_id": ticket_id,   # ✅ send doc ID to frontend
         "predicted_department": department
     }
 
@@ -174,6 +180,16 @@ def update_grievance_status(grievance_id: str, update: StatusUpdate):
         "id": grievance_id,
         "new_status": update.status
     }
+@app.get("/grievance/track/{ticket_id}")
+def track_grievance(ticket_id: str):
+    doc = db.collection("grievances").document(ticket_id).get()
+
+    if not doc.exists:
+        return {"error": "Ticket not found"}
+
+    data = doc.to_dict()
+    data["ticket_id"] = ticket_id  # optional but useful
+    return data
 
 @app.get("/predict-department")
 def test_prediction(text: str):
