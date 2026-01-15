@@ -1,0 +1,73 @@
+text,department
+No water supply in hostel,Water
+Water leakage in bathroom,Water
+Drinking water not available,Water
+Water tap is broken,Water
+Low water pressure in hostel,Water
+No water since morning,Water
+Water supply issue for two days,Water
+Dirty water coming from tap,Water
+Water overflow near hostel block,Water
+Water problem again in hostel,Water
+Water supply stopped suddenly,Water
+No drinking water in campus,Water
+
+Street lights not working,Electricity
+Power cut since last night,Electricity
+Fan not working in room,Electricity
+Light not working in corridor,Electricity
+Frequent power cuts in hostel,Electricity
+Switch board damaged in room,Electricity
+AC not working in lab,Electricity
+Electric socket not working,Electricity
+Tube light fused in classroom,Electricity
+Voltage fluctuation in hostel,Electricity
+Power outage in campus,Electricity
+Generator not working during power cut,Electricity
+
+WiFi not working in hostel,IT
+Internet is very slow,IT
+Unable to connect to campus WiFi,IT
+WiFi not working,IT
+Internet not working in room,IT
+No internet connection,IT
+WiFi very slow in hostel,IT
+Campus internet down,IT
+Network issue in hostel,IT
+Router not working,IT
+WiFi keeps disconnecting,IT
+Cannot access college portal,IT
+
+Room is not cleaned properly,Maintenance
+Broken door lock in room,Maintenance
+Bathroom needs cleaning,Maintenance
+Room light holder is broken,Maintenance
+Window glass broken in room,Maintenance
+Bed is damaged in hostel room,Maintenance
+Ceiling fan making noise,Maintenance
+Water leakage from ceiling,Maintenance
+Washroom drainage blocked,Maintenance
+Garbage not cleared near hostel,Maintenance
+Door handle broken,Maintenance
+Room maintenance required urgently,Maintenance
+
+Food quality is very poor,Mess
+Food is not cooked properly,Mess
+Mess food tastes bad,Mess
+Found insects in food,Mess
+Food is cold in mess,Mess
+Mess hygiene is very bad,Mess
+Drinking water not available in mess,Mess
+Mess staff behavior is rude,Mess
+Breakfast not served on time,Mess
+Mess food causing stomach issues,Mess
+
+Security guard not present at gate,Security
+Unauthorized people entering hostel,Security
+Street lights off causing safety issue,Security
+Theft reported in hostel room,Security
+CCTV not working in corridor,Security
+Security staff not responding,Security
+Main gate left open at night,Security
+No security during night hours,Security
+Suspicious activity near hostel,Security
