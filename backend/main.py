@@ -8,8 +8,10 @@ import pickle
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from fastapi.middleware.cors import CORSMiddleware
 
+from ai.priority import predict_priority
+
 # =========================
-# MODELS
+# DATA MODELS
 # =========================
 
 class Grievance(BaseModel):
@@ -23,9 +25,8 @@ class StatusUpdate(BaseModel):
 # APP SETUP
 # =========================
 
-print("RUNNING THIS MAIN FILE")
-
 app = FastAPI()
+print("🚀 Backend starting...")
 
 app.add_middleware(
     CORSMiddleware,
@@ -43,7 +44,7 @@ cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
-print("Firestore working!")
+print("✅ Firestore connected")
 
 # =========================
 # AI MODEL LOADING
@@ -61,10 +62,10 @@ with open(TOKENIZER_PATH, "rb") as f:
 with open(ENCODER_PATH, "rb") as f:
     label_encoder = pickle.load(f)
 
-print("AI model loaded successfully")
+print("✅ Department AI model loaded")
 
 # =========================
-# HYBRID AI LOGIC
+# HYBRID DEPARTMENT AI
 # =========================
 
 KEYWORD_MAP = {
@@ -98,23 +99,21 @@ KEYWORD_MAP = {
 }
 
 def predict_department_ml(text: str) -> str:
-    sequence = tokenizer.texts_to_sequences([text])
-    padded = pad_sequences(sequence, maxlen=10, padding="post")
+    seq = tokenizer.texts_to_sequences([text])
+    padded = pad_sequences(seq, maxlen=10, padding="post")
 
     prediction = model.predict(padded)
-    predicted_index = prediction.argmax()
+    index = prediction.argmax()
 
-    return label_encoder.inverse_transform([predicted_index])[0]
+    return label_encoder.inverse_transform([index])[0]
 
 def hybrid_predict_department(text: str) -> str:
     text_lower = text.lower()
 
-    # Rule-based (high confidence)
     for keyword, department in KEYWORD_MAP.items():
         if keyword in text_lower:
             return department
 
-    # ML fallback
     return predict_department_ml(text)
 
 # =========================
@@ -125,42 +124,55 @@ def hybrid_predict_department(text: str) -> str:
 def root():
     return {"status": "Backend running"}
 
+# -------------------------
+# SUBMIT GRIEVANCE
+# -------------------------
+
 @app.post("/grievance")
 def submit_grievance(grievance: Grievance):
     department = hybrid_predict_department(grievance.text)
+    priority = predict_priority(grievance.text)
 
-    # Create document first
+    # Create document with generated ticket ID
     doc_ref = db.collection("grievances").document()
-    ticket_id = doc_ref.id   # ✅ Firestore document ID
+    ticket_id = doc_ref.id
 
     doc_ref.set({
         "text": grievance.text,
         "user": grievance.user,
         "department": department,
-        "priority": "Medium",
+        "priority": priority,
         "status": "Pending",
         "created_at": datetime.utcnow()
     })
 
-    print("✅ Firestore write successful:", ticket_id)
+    print(f"✅ Grievance saved | Ticket ID: {ticket_id}")
 
     return {
         "message": "Grievance submitted successfully",
-        "ticket_id": ticket_id,   # ✅ send doc ID to frontend
-        "predicted_department": department
+        "ticket_id": ticket_id,
+        "predicted_department": department,
+        "priority": priority
     }
+
+# -------------------------
+# GET ALL GRIEVANCES
+# -------------------------
 
 @app.get("/grievances")
 def get_all_grievances():
-    grievances_ref = db.collection("grievances").stream()
     grievances = []
 
-    for doc in grievances_ref:
+    for doc in db.collection("grievances").stream():
         data = doc.to_dict()
-        data["id"] = doc.id
+        data["ticket_id"] = doc.id
         grievances.append(data)
 
     return grievances
+
+# -------------------------
+# UPDATE STATUS (ADMIN)
+# -------------------------
 
 @app.patch("/grievance/{grievance_id}")
 def update_grievance_status(grievance_id: str, update: StatusUpdate):
@@ -177,9 +189,14 @@ def update_grievance_status(grievance_id: str, update: StatusUpdate):
 
     return {
         "message": "Status updated successfully",
-        "id": grievance_id,
+        "ticket_id": grievance_id,
         "new_status": update.status
     }
+
+# -------------------------
+# TRACK GRIEVANCE
+# -------------------------
+
 @app.get("/grievance/track/{ticket_id}")
 def track_grievance(ticket_id: str):
     doc = db.collection("grievances").document(ticket_id).get()
@@ -188,8 +205,12 @@ def track_grievance(ticket_id: str):
         return {"error": "Ticket not found"}
 
     data = doc.to_dict()
-    data["ticket_id"] = ticket_id  # optional but useful
+    data["ticket_id"] = ticket_id
     return data
+
+# -------------------------
+# TEST DEPARTMENT AI
+# -------------------------
 
 @app.get("/predict-department")
 def test_prediction(text: str):

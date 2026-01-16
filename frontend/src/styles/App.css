@@ -175,6 +175,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-right: auto;
   padding: 1rem 0;
 }
 
@@ -229,18 +230,19 @@ body {
 /* Desktop Navigation */
 .nav-desktop {
   display: flex;
-  align-items: center;
+  align-items:center;
   gap: 2rem;
 }
 
 .nav-link {
-  text-decoration: none;
+  text-decoration:underline;
   color: var(--brown-light);
   font-weight: 500;
   font-size: 0.95rem;
   padding: 0.5rem 0;
   position: relative;
   transition: var(--transition);
+  
 }
 
 .nav-link:hover {
@@ -256,7 +258,8 @@ body {
   height: 2px;
   background: linear-gradient(90deg, var(--brown-medium), var(--beige-dark));
   transition: var(--transition);
-  border-radius: 1px;
+  
+  
 }
 
 .nav-link:hover::after {
@@ -284,7 +287,7 @@ body {
 
 .login-btn {
   background: transparent;
-  color: var(--brown-medium);
+  color: white;
   border: 1.5px solid var(--brown-medium);
 }
 
@@ -315,8 +318,8 @@ body {
 }
 
 .logout-btn {
-  background: transparent;
-  color: var(--danger);
+  background: var(--brown-medium);
+  color: white;
   border: 1.5px solid var(--danger);
 }
 
@@ -517,10 +520,11 @@ body {
 .btn-primary {
   background: linear-gradient(135deg, var(--brown-medium), var(--beige-dark));
   color: white;
-  padding: 1rem 2rem;
+  padding:10px 20px 10px 20px;
   border-radius: var(--border-radius);
   text-decoration: none;
   font-weight: 600;
+  
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -708,7 +712,7 @@ body {
 }
 
 .feature-card {
-  background: white;
+  background:var(--beige-light);
   border-radius: var(--border-radius-lg);
   padding: 2rem;
   text-decoration: none;
@@ -721,6 +725,7 @@ body {
 }
 
 .feature-card:hover {
+  background:whitesmoke;
   transform: translateY(-8px);
   border-color: var(--brown-medium);
   box-shadow: var(--box-shadow-lg);
@@ -818,7 +823,7 @@ body {
 }
 
 .step-icon {
-  font-size: 3rem;
+  font-size: 2rem;
   margin-bottom: 1rem;
 }
 
@@ -833,15 +838,7 @@ body {
   line-height: 1.6;
 }
 
-.step-connector {
-  position: absolute;
-  top: 50%;
-  right: -1.5rem;
-  width: 3rem;
-  height: 2px;
-  background: linear-gradient(90deg, var(--brown-medium), var(--beige-dark));
-  display: none;
-}
+
 
 @media (min-width: 768px) {
   .steps-container {
@@ -1499,10 +1496,10 @@ body {
 /* Search Section */
 .track-search-section {
   background: white;
-  padding: 2.5rem;
+  padding: 2rem;
   border-radius: var(--border-radius-lg);
   box-shadow: var(--box-shadow);
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   border: 1px solid var(--brown-soft);
 }
 
@@ -1514,7 +1511,8 @@ body {
 .search-input-group {
   display: flex;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  margin-top:1rem;
   position: relative;
 }
 
@@ -1592,6 +1590,7 @@ body {
 
 /* Summary Card */
 .summary-card {
+ 
   background: white;
   padding: 2.5rem;
   border-radius: var(--border-radius-lg);
@@ -1709,7 +1708,7 @@ body {
   padding: 2.5rem;
   border-radius: var(--border-radius-lg);
   box-shadow: var(--box-shadow);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   border: 1px solid var(--brown-soft);
 }
 
@@ -1764,25 +1763,29 @@ body {
 }
 
 .step-marker {
+  font-size: 1.75rem;
   position: relative;
-  width: 70px;
-  height: 70px;
+  width: 100px;
+  height: 100px;
   background: white;
   border: 2px solid var(--brown-soft);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.75rem;
+  
   z-index: 2;
   flex-shrink: 0;
   transition: var(--transition);
 }
 
 .marker-icon {
+ 
   display: flex;
   align-items: center;
   justify-content: center;
+  
+
 }
 
 .step-connector {
@@ -1826,6 +1829,10 @@ body {
   border-radius: var(--border-radius-sm);
   font-size: 0.875rem;
   font-weight: 500;
+}
+.timeline-icon{
+  font-size: 2.5rem;
+  margin-left:-10px;
 }
 
 .step-description {

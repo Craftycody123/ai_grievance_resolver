@@ -43,24 +43,25 @@ const SubmitComplaint = () => {
       {result && (
         <div
           style={{
-            marginTop: "2rem",
-            padding: "1rem",
+            marginTop: "3rem",
+            padding: "2rem",
             borderRadius: "8px",
-            background: "#ecfeff",
-            border: "1px solid #67e8f9"
+            background: "whitesmoke",
+            border: "1px solid var(beige-light)",
+            marginBottom: "3rem"            
           }}
         >
-          <h3>Complaint Submitted Successfully 🎉</h3>
+          <h2>Complaint Submitted Successfully 🎉</h2>
 
-          <p>
+          <p style={{ marginBottom: "0.75rem", marginTop: "1rem" }}>
             <strong>Ticket ID:</strong> {result.ticketId}
           </p>
 
-          <p>
+          <p  style={{ marginBottom: "0.75rem" }}>
             <strong>Assigned Department:</strong> {result.department}
           </p>
 
-          <p style={{ fontSize: "0.9rem", color: "#555" }}>
+          <p style={{ fontSize: "1rem", color: "#555", marginTop: "1rem"  }}>
             Please save your Ticket ID to track the status of your complaint.
           </p>
         </div>

@@ -30,18 +30,18 @@ const Header = () => {
           <Link to="/">Home</Link>
           <Link to="/submit">Submit</Link>
           <Link to="/track">Track</Link>
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/about">About</Link>
         </nav>
 
         {/* RIGHT: AUTH AREA */}
         <div className="header-right">
           {!user ? (
             <>
-              <Link to="/login" className="btn-link">
+              <Link to="/login" className="btn-primary">
                 Login
               </Link>
-              <Link to="/login" className="btn-primary">
-                Register
-              </Link>
+            
             </>
           ) : (
             <>

@@ -76,7 +76,7 @@ const Home = () => {
         <div className="container">
           <div className="hero-content">
             <div className="hero-text">
-              <span className="hero-badge">AI-Powered Platform</span>
+              
               <h1 className="hero-title">
                 Resolve Your <span className="text-gradient">Grievances</span> 
                 <br />Intelligently & Efficiently
@@ -181,9 +181,7 @@ const Home = () => {
                   <h3>{step.title}</h3>
                   <p>{step.description}</p>
                 </div>
-                {index < steps.length - 1 && (
-                  <div className="step-connector"></div>
-                )}
+               
               </div>
             ))}
           </div>

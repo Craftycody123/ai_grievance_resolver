@@ -116,17 +116,26 @@ const TrackComplaint = () => {
 
         {/* Search */}
         <div className="track-search-section">
-          <input
-            type="text"
-            value={ticketId}
-            onChange={(e) => setTicketId(e.target.value)}
-            placeholder="Enter your Ticket ID"
-            className="track-input"
-          />
-          <button onClick={handleTrack} disabled={loading} className="btn-primary">
-            {loading ? "Tracking..." : "Track Status"}
-          </button>
-        </div>
+  <div className="search-container">
+    <div className="search-input-group">
+      <input
+        type="text"
+        value={ticketId}
+        onChange={(e) => setTicketId(e.target.value)}
+        placeholder="Enter your Ticket ID"
+        className="track-input"
+      />
+
+      <button
+        onClick={handleTrack}
+        disabled={loading}
+        className="btn-primary"
+      >
+        {loading ? "Tracking..." : "Track Status"}
+      </button>
+    </div>
+  </div>
+</div>
 
         {/* Error */}
         {error && <div className="error-box">{error}</div>}
@@ -137,18 +146,18 @@ const TrackComplaint = () => {
 
             {/* Summary */}
             <div className="summary-card">
-              <h3>Complaint Summary</h3>
-              <p><strong>Ticket ID:</strong> {trackingData.ticketId}</p>
-              <p><strong>Complaint:</strong> {trackingData.complaint}</p>
-              <p><strong>Department:</strong> {trackingData.department}</p>
-              <p><strong>Status:</strong> {trackingData.status}</p>
-              <p><strong>Priority:</strong> {trackingData.priority}</p>
-              <p><strong>Submitted:</strong> {trackingData.submittedDate}</p>
+              <h2>Complaint Summary</h2>
+              <h4 style={{ marginBottom: "0.75rem", marginTop: "1rem" }}><strong>Ticket ID:</strong> {trackingData.ticketId}</h4>
+              <h4 style={{ marginBottom: "0.75rem", marginTop: "1rem" }}><strong>Complaint:</strong> {trackingData.complaint}</h4>
+              <h4 style={{ marginBottom: "0.75rem", marginTop: "1rem" }}><strong>Department:</strong> {trackingData.department}</h4>
+              <h4 style={{ marginBottom: "0.75rem", marginTop: "1rem" }}><strong>Status:</strong> {trackingData.status}</h4>
+              <h4 style={{ marginBottom: "0.75rem", marginTop: "1rem" }}><strong>Priority:</strong> {trackingData.priority}</h4>
+              <h4 style={{ marginBottom: "0.75rem", marginTop: "1rem" }}><strong>Submitted:</strong> {trackingData.submittedDate}</h4>
             </div>
 
             {/* Timeline */}
             <div className="timeline-section">
-              <h3>Complaint Timeline</h3>
+              <h3 style={{ marginBottom: "1.5rem" }} >Complaint Timeline</h3>
               <div className="timeline-container">
                 {trackingData.timeline.map((step, index) => (
                   <div
