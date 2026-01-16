@@ -40,8 +40,17 @@ app.add_middleware(
 # FIREBASE SETUP
 # =========================
 
-cred = credentials.Certificate("serviceAccountKey.json")
+import os, json
+from firebase_admin import credentials
+
+firebase_json = os.environ.get("FIREBASE_SERVICE_ACCOUNT")
+
+if not firebase_json:
+    raise ValueError("FIREBASE_SERVICE_ACCOUNT env variable not set")
+
+cred = credentials.Certificate(json.loads(firebase_json))
 firebase_admin.initialize_app(cred)
+
 
 db = firestore.client()
 print("✅ Firestore connected")
