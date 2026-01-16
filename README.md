@@ -27,6 +27,7 @@ The application follows a client–server architecture:
 1. Open a terminal and navigate to the frontend directory:
    
    cd frontend
+   
 2.Install the required dependencies (this installs React and related libraries):
 
     npm install
