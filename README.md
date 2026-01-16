@@ -52,9 +52,11 @@ The application follows a client–server architecture:
 3.Activate the virtual environment:
 
   On Windows:
+  
     venv\Scripts\activate
     
   On macOS / Linux:
+  
     source venv/bin/activate
     
 4.Install backend dependencies:
