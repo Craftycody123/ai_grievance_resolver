@@ -22,7 +22,7 @@ The application follows a client–server architecture:
    - 
 ## 📁 Project Structure
 
-    Frontend Setup (React)
+ Frontend Setup (React)
 
 1. Open a terminal and navigate to the frontend directory:
    
