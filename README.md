@@ -25,31 +25,48 @@ The application follows a client–server architecture:
     Frontend Setup (React)
 
 1. Open a terminal and navigate to the frontend directory:
-   ```bash
+   
    cd frontend
 2.Install the required dependencies (this installs React and related libraries):
+
     npm install
+   
 3.Start the React development server:
+
     npm run dev
+    
 4.The frontend will run at:
+
     http://localhost:5173
 
     Backend Setup (Python + TensorFlow)
 
 1.Open a new terminal and navigate to the backend directory:
+
     cd backend
+    
 2.Create a Python virtual environment:
+
     python -m venv venv
+    
 3.Activate the virtual environment:
+
   On Windows:
     venv\Scripts\activate
+    
   On macOS / Linux:
     source venv/bin/activate
+    
 4.Install backend dependencies:
+
     pip install tensorflow firebase-admin fastapi uvicorn
+    
 5.Start the backend server:
+
     uvicorn main:app --reload
+    
 6.The backend API will run at:
+
     http://127.0.0.1:8000
   
     
