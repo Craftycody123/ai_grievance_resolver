@@ -39,7 +39,9 @@ The application follows a client–server architecture:
 
     http://localhost:5173
 
-    Backend Setup (Python + TensorFlow)
+
+ Backend Setup (Python + TensorFlow)
+ 
 
 1.Open a new terminal and navigate to the backend directory:
 
